@@ -64,4 +64,9 @@ class ApplicationController < Sinatra::Base
     erb :'shows/index'
   end
 
+  get '/agg' do
+    Scraper.new
+    erb :"shows/loaded"
+  end
+
 end
