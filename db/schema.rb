@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121010252) do
+ActiveRecord::Schema.define(version: 20171121010909) do
 
   create_table "setlists", force: :cascade do |t|
     t.string "set1"
@@ -50,6 +50,11 @@ ActiveRecord::Schema.define(version: 20171121010252) do
     t.string "name"
     t.integer "year"
     t.integer "num_shows"
+  end
+
+  create_table "user_shows", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "show_id"
   end
 
   create_table "users", force: :cascade do |t|
