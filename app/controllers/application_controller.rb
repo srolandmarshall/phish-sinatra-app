@@ -59,13 +59,23 @@ class ApplicationController < Sinatra::Base
     erb :'users/show'
   end
 
+  #tours
+
+  get '/tours' do
+    if logged_in?
+      erb :'tours/tours'
+    else
+      redirect '/login'
+    end
+  end
+
   #shows
   get '/shows' do
     erb :'shows/index'
   end
 
   get '/agg' do
-    Scraper.new
+    Scraper.scrape_shows_2017
     erb :"shows/loaded"
   end
 

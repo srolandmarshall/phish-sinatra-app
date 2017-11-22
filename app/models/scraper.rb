@@ -116,44 +116,44 @@ class Scraper
   def self.get_setlist(page)
     soundcheck = ""
     set1, set2, set3, set4, encore = [],[],[],[],[]
-    setlist = Setlist.new(soundcheck, set1, set2, set3, set4, encore)
     page.css("div.setlist-body").css('p').each do |set|
       if set.css("i").text.include?("Soundcheck")
-        setlist.soundcheck = set.text.strip
+        soundcheck = set.text.strip
       else
         songs = []
         set.css("a").each do |song|
-          songs << Song.find_by(name: song.text)
+          songs << song.text
         end
-        setlist.set1 = songs if set.css("span").text == "SET 1"
-        setlist.set2 = songs if set.css("span").text == "SET 2"
-        setlist.set3 = songs if set.css("span").text == "SET 3"
-        setlist.set4 = songs if set.css("span").text == "SET 4"
-        setlist.encore = songs if set.css("span").text == "ENCORE"
+        set1 = songs.join(', ') if set.css("span").text == "SET 1"
+        set2 = songs.join(', ') if set.css("span").text == "SET 2"
+        set3 = songs.join(', ') if set.css("span").text == "SET 3"
+        set4 = songs.join(', ') if set.css("span").text == "SET 4"
+        encore = songs.join(', ') if set.css("span").text == "ENCORE"
       end
     end
-    setlist
+    setlist = Setlist.create(soundcheck: soundcheck, set1: set1, set2: set2, set3: set3, set4: set4, encore: encore)
   end
 
   def self.get_jams(page)
     jams = []
     page.css("div.tpcbox").css("div.box-body")[0].css("a").each do |jam|
-      jams << Song.find_by(name: jam.text) if Song.find_by(name: jam.text)
+      jams << jam.text
     end
-    jams
+    jams.join(', ')
   end
 
   def self.scrape_show(page)
     venue = page.css("div.setlist-venue").css(".hideover768").text
     location = page.css("div.setlist-location").text
-    setlist = get_setlist(page)
-    date = page.css("span.setlist-date").css("a")[1].text
+    # setlist = get_setlist(page)
+    date_string = page.css("span.setlist-date").css("a")[1].text
+    date = Date.strptime(date_string.split(' ')[1],"%m/%d/%Y")
     notes = page.css("div.setlist-notes").text
-    rating = page.css("div.permalink-rating").text.split(" ")[3].split("/")[0].to_f
+    rating = page.css("div.permalink-rating").text.split(" ")[3].split("/")[0].to_f if page.css("div.permalink-rating").text
     jams = get_jams(page)
-    tour = Tour.find_by(name: page.css("h4.bs-callout").css("a")[0].text)
-    if !Show.show_exist?(date,setlist)
-      # Show.new(tour, date, venue, location, setlist, notes, rating, jams)
+    tour_id = Tour.find_by(name: page.css("h4.bs-callout").css("a")[0].text).id
+    show = Show.find_or_create_by(tour_id: tour_id, date: date, date_string: date_string, venue: venue, city: location, notes: notes, jams: jams, rating: rating)
+    if show == Show.last
       puts "Scraped #{Show.all.last.date}"
     end
   end
@@ -167,20 +167,31 @@ class Scraper
     Nokogiri::HTML(open("http://phish.net/setlists/?year=#{year}&month=#{month}&day=#{day}"))
   end
 
-  def scrape_shows
+  def self.scrape_shows
     #this code scrapes every show Phish has ever played - 1600+ shows. Use caution, not fully developed. Took 52 mins in 2017 on an i7 with Cable internet.
 
     Tour.all.each do |tour|
       links = []
-      tour_page = Nokogiri::HTML(open(tour.link))
+      tour_page = Nokogiri::HTML(open("http://phish.net#{tour.link}"))
       tour_page.css("div.tpcmainbox").css("a").each {|link| links << link["href"] if link["href"] =~ /setlists\/phish/}
       links.each do |link|
         show_page = Nokogiri::HTML(open("http://phish.net#{link}"))
-        tour.shows << scrape_show(show_page)
-        puts "Scraped page #{tour.shows.last.date}"
+        scrape_show(show_page)
+        puts "Scraped page #{Show.last.date_string}"
       end
     end
     binding.pry
+  end
+
+  def self.scrape_shows_2017
+    links = []
+    page = Nokogiri::HTML(open("http://phish.net/setlists/phish/2017.html"))
+    page.css("span.setlist-date").css("a").each {|link| links << link["href"] if link.text != "PHISH"}
+    links.each do |link|
+      show_page = Nokogiri::HTML(open("http://phish.net#{link}"))
+      scrape_show(show_page)
+      puts "Scraped page #{Show.last.date_string}"
+    end
   end
 
   def initialize
