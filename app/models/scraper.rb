@@ -151,7 +151,7 @@ class Scraper
     notes = page.css("div.setlist-notes").text
     rating = page.css("div.permalink-rating").text.split(" ")[3].split("/")[0].to_f if page.css("div.permalink-rating").text
     jams = get_jams(page)
-    tour_id = Tour.find_by(name: page.css("h4.bs-callout").css("a")[0].text).id
+    tour_id = Tour.find_by(name: page.css("h4.bs-callout").css("a")[0].text).id if page.css("h4.bs-callout").css("a")[0].text
     show = Show.find_or_create_by(tour_id: tour_id, date: date, date_string: date_string, venue: venue, city: location, notes: notes, jams: jams, rating: rating)
     if show == Show.last
       puts "Scraped #{Show.all.last.date}"
@@ -191,6 +191,13 @@ class Scraper
       show_page = Nokogiri::HTML(open("http://phish.net#{link}"))
       scrape_show(show_page)
       puts "Scraped page #{Show.last.date_string}"
+    end
+  end
+
+  def self.add_year_to_shows
+    Show.all.each do |show|
+      show.year = show.date.year
+      show.save
     end
   end
 

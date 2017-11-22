@@ -17,6 +17,7 @@ class ApplicationController < Sinatra::Base
     def current_user
       User.find(session[:user_id])
     end
+
   end
 
   get '/' do
@@ -74,8 +75,28 @@ class ApplicationController < Sinatra::Base
     erb :'shows/index'
   end
 
+  get '/addshow' do
+    @years = []
+    Tour.all.each {|t| @years << t.year}
+    @years.uniq!
+    if logged_in?
+      erb :'shows/add'
+    else
+      redirect '/login'
+    end
+  end
+
+  post '/addshow' do
+    @years = []
+    Tour.all.each {|t| @years << t.year}
+    @years.uniq!
+    @year = params[:year]
+    @shows = Show.where(year: params[:year])
+    erb :'shows/add'
+  end
+
   get '/agg' do
-    Scraper.scrape_shows_2017
+    Scraper.add_year_to_shows
     erb :"shows/loaded"
   end
 

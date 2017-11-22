@@ -1,0 +1,23 @@
+<h1>Add a show to your profile</h1>
+
+<h3>Enter a year</h3>
+<form method="post" action="/addshow">
+  <select name="year">
+    <% @years.each do |y| %>
+      <option value="<%=y.to_s%>"><%=y.to_s%></option>
+    <% end %>
+  </select>
+  <input type="submit" value="Search"></form>
+
+
+<% if @shows %>
+<h3>Select a show</h3>
+
+<form method="post" action="/shows">
+  <select name="show">
+    <% @shows.each do |s| %>
+      <option value="<%=s.date_string%>"><%=s.date_string + ' - ' + s.city%></option>
+    <% end %>
+  </select>
+  <input type="submit" value="Search"></form>
+<%end%>
