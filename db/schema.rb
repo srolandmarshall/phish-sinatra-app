@@ -12,6 +12,11 @@
 
 ActiveRecord::Schema.define(version: 20171122210754) do
 
+  create_table "setlist_shows", force: :cascade do |t|
+    t.integer "setlist_id"
+    t.integer "show_id"
+  end
+
   create_table "setlists", force: :cascade do |t|
     t.string "set1"
     t.string "set2"

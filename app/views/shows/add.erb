@@ -13,11 +13,11 @@
 <% if @shows %>
 <h3>Select a show</h3>
 
-<form method="post" action="/shows">
+<form method="post" action="/users/<%=@user.id%>">
   <select name="show">
     <% @shows.each do |s| %>
-      <option value="<%=s.date_string%>"><%=s.date_string + ' - ' + s.city%></option>
+      <option name="<%=s.id%>" value="<%=s.date_string%>"><%=s.date_string + ' - ' + s.city%></option>
     <% end %>
   </select>
-  <input type="submit" value="Search"></form>
+  <input type="submit" value="Add Show"></form>
 <%end%>

@@ -60,6 +60,14 @@ class ApplicationController < Sinatra::Base
     erb :'users/show'
   end
 
+  post '/users/:id' do
+    @user = User.find_by(id: params[:id])
+    @show = Show.find_by(date_string: params[:show])
+    @user.shows << @show if !@user.shows.exists?(id: @show.id)
+    @user.save
+    erb :'users/show'
+  end
+
   #tours
 
   get '/tours' do
@@ -79,6 +87,7 @@ class ApplicationController < Sinatra::Base
     @years = []
     Tour.all.each {|t| @years << t.year}
     @years.uniq!
+    @user = current_user
     if logged_in?
       erb :'shows/add'
     else
@@ -92,6 +101,7 @@ class ApplicationController < Sinatra::Base
     @years.uniq!
     @year = params[:year]
     @shows = Show.where(year: params[:year])
+    @user = current_user
     erb :'shows/add'
   end
 
