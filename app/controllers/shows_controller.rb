@@ -4,6 +4,10 @@ class ShowController < ApplicationController
     erb :'shows/index'
   end
 
+  # post '/shows' do
+  #
+  # end
+
   get '/addshow' do
     @years = []
     Tour.all.each {|t| @years << t.year}

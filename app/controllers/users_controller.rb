@@ -46,7 +46,10 @@ class UserController < ApplicationController
   post '/users/:id' do
     @user = User.find_by(id: params[:id])
     @show = Show.find_by(date_string: params[:show])
-    @user.shows << @show if !@user.shows.exists?(id: @show.id)
+    @review = Review.create(text: params[:review])
+    @review.user = current_user
+    @review.show = @show
+    @review.save
     @user.save
     erb :'users/show'
   end
