@@ -23,4 +23,15 @@ class ReviewController < ApplicationController
     erb :'reviews/add'
   end
 
+  get '/reviews/:id/edit' do
+    @review = Review.find_by(id:params[:id])
+    erb :'reviews/edit'
+  end
+
+  post '/reviews/:id/edit' do
+    @review = Review.find_by(id:params[:id])
+    @review.update(text: params[:review])
+    redirect '/reviews'
+  end
+
 end
