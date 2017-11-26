@@ -26,18 +26,37 @@ class ReviewController < ApplicationController
 
   get '/reviews/:id/edit' do
     @review = Review.find_by(id:params[:id])
-    erb :'reviews/edit'
+    if @review.user.id == current_user.id
+      erb :'reviews/edit'
+    elsif logged_in?
+      flash[:message] = "You are not the owner of this review."
+      redirect '/reviews'
+    else
+      flash[:message] = "You need to be logged in to do this."
+      redirect '/login'
+    end
   end
 
   post '/reviews/:id/edit' do
     @review = Review.find_by(id:params[:id])
     @review.update(text: params[:review])
+    flash[:message] = "Review edited."
     redirect '/reviews'
   end
 
   get '/reviews/:id/delete' do
-    Review.find_by(id:params[:id]).destroy
-    redirect '/reviews'
+    @review = Review.find_by(id:params[:id])
+    if @review.user.id == current_user.id
+      @review.destroy
+      flash[:message] = "Review deleted."
+      redirect '/reviews'
+    elsif logged_in?
+      flash[:message] = "You are not the owner of this review."
+      redirect '/reviews'
+    else
+      flash[:message] = "You need to be logged in to do this."
+      redirect '/login'
+    end
   end
 
 end
