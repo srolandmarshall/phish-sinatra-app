@@ -34,4 +34,9 @@ class ReviewController < ApplicationController
     redirect '/reviews'
   end
 
+  get '/reviews/:id/delete' do
+    Review.find_by(id:params[:id]).destroy
+    redirect '/reviews'
+  end
+
 end
