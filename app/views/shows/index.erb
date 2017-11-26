@@ -1,1 +1,6 @@
-<h1>Shows Page, Eventually</h1>
+<h1>Reviews Page</h1>
+
+<% @reviews.each do |r| %>
+<h3><%=r.user.username%>'s Review of <%=r.show.date_string + " - " + r.show.city%></h3>
+<p><%=r.text%></p>
+<% end %>
