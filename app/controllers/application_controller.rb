@@ -7,6 +7,7 @@ class ApplicationController < Sinatra::Base
     set :views, 'app/views'
     enable :sessions
     set :session_secret, "secret"
+    register Sinatra::Flash
   end
 
   helpers do
@@ -21,16 +22,10 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-    erb :index
-  end
-
-  #tours
-
-  get '/tours' do
     if logged_in?
-      erb :'tours/tours'
+      redirect '/reviews'
     else
-      redirect '/login'
+      erb :index
     end
   end
 

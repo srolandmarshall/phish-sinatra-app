@@ -12,4 +12,5 @@ gem 'pry'
 gem 'bcrypt'
 gem "tux"
 gem 'nokogiri'
+gem 'sinatra-flash'
 gem 'database_cleaner', git: 'https://github.com/bmabey/database_cleaner.git'

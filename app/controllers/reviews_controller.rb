@@ -11,6 +11,7 @@ class ReviewController < ApplicationController
     if logged_in?
       erb :'reviews/add'
     else
+      flash[:message] = "You need to be logged in to do this."
       redirect '/login'
     end
   end
