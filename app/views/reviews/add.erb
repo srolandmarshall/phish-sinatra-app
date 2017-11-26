@@ -1,7 +1,7 @@
 <h1>Add a show review to your profile</h1>
 
 <h3>Enter a year</h3>
-<form method="post" action="/addshow">
+<form method="post" action="/add">
   <select name="year">
     <% @years.each do |y| %>
       <option value="<%=y.to_s%>"><%=y.to_s%></option>

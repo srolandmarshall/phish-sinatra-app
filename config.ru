@@ -8,3 +8,4 @@ use Rack::MethodOverride
 run ApplicationController
 use ShowController
 use UserController
+use ReviewController
