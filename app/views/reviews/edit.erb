@@ -1,0 +1,5 @@
+<h1>Edit Review</h1>
+
+<form method="post" action="/reviews/<%=@review.id%>/edit">
+  <P>Review: <textarea name="review" cols="45" rows="5" ><%=@review.text%></textarea></p>
+  <input type="submit" value="Edit Review"></form>

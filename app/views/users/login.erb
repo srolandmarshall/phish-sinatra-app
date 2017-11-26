@@ -1,4 +1,5 @@
 <center>
+  <h4><% if !!flash[:message] %> <%= flash[:message] %> <% end %></h4>
   <h3>Login</h3>
   <form action="/login" method="post">
     <p><input type="text" name="email" placeholder="Email"></p>

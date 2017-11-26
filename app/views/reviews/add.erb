@@ -1,7 +1,7 @@
-<h1>Add a show to your profile</h1>
+<h1>Add a show review to your profile</h1>
 
 <h3>Enter a year</h3>
-<form method="post" action="/addshow">
+<form method="post" action="/add">
   <select name="year">
     <% @years.each do |y| %>
       <option value="<%=y.to_s%>"><%=y.to_s%></option>
@@ -19,5 +19,6 @@
       <option name="<%=s.id%>" value="<%=s.date_string%>"><%=s.date_string + ' - ' + s.city%></option>
     <% end %>
   </select>
-  <input type="submit" value="Add Show"></form>
+  <P>Review: <textarea name="review" cols="45" rows="5" placeholder="Your Review Here..." ></textarea></p>
+  <input type="submit" value="Add Review"></form>
 <%end%>
