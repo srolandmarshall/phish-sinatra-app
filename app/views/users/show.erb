@@ -2,7 +2,9 @@
 
 <h3>Shows</h3>
 <ul>
-  <% @user.shows.each do |s| %>
-  <li><%=s.date_string + " - " + s.city %></li>
+  <% @user.reviews.each do |r| %>
+  <li><%=r.show.date_string + " - " + r.show.city %>
+    <p><%=r.text%></p>
+    </li>
   <% end %>
 </ul>
