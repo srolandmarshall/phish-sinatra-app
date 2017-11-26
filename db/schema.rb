@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171126020503) do
+ActiveRecord::Schema.define(version: 20171126021842) do
 
   create_table "reviews", force: :cascade do |t|
     t.string "text"
@@ -45,11 +45,6 @@ ActiveRecord::Schema.define(version: 20171126020503) do
     t.integer "year"
     t.integer "num_shows"
     t.string "link"
-  end
-
-  create_table "user_reviews", force: :cascade do |t|
-    t.integer "review_id"
-    t.integer "user_id"
   end
 
   create_table "user_shows", force: :cascade do |t|
