@@ -39,7 +39,7 @@ class UserController < ApplicationController
 
   get '/users/:id' do
     @user = User.find_by(id: params[:id])
-    @shows = @user.shows
+    @reviews = @user.reviews
     erb :'users/show'
   end
 

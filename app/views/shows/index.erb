@@ -1,6 +1,10 @@
 <h1>Reviews Page</h1>
 
 <% @reviews.each do |r| %>
-<h3><%=r.user.username%>'s Review of <%=r.show.date_string + " - " + r.show.city%></h3>
-<p><%=r.text%></p>
+  <h3><%=r.user.username%>'s Review of <%=r.show.date_string + " - " + r.show.city%></h3>
+  <p><%=r.text%></p>
+  <% if r.user.id==current_user.id %>
+  <p><a href="/shows/<%=r.id%>/edit">Edit Review</a></p>
+  <p><a href="/shows/<%=r.id%>/delete">Delete Review</a></p>
+  <% end %>
 <% end %>

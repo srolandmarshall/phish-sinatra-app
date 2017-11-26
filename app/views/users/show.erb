@@ -1,10 +1,14 @@
 <h1><%=@user.username%>'s profile!</h1>
 
-<h3>Shows</h3>
+<h3>Reviews</h3>
 <ul>
   <% @user.reviews.each do |r| %>
   <li><%=r.show.date_string + " - " + r.show.city %>
     <p><%=r.text%></p>
+    <% if r.user.id==current_user.id %>
+      <p><a href="/shows/<%=r.id%>/edit">Edit Review</a></p>
+      <p><a href="/shows/<%=r.id%>/delete">Delete Review</a></p>
+    <% end %>
     </li>
   <% end %>
 </ul>
