@@ -31,7 +31,7 @@ class UserController < ApplicationController
     if (params[:username] != "") && (params[:email] != "") && (params[:password] != "")
       @user = User.create(params)
       session[:user_id] = @user.id
-      redirect to '/shows'
+      redirect '/reviews'
     else
       redirect '/signup'
     end

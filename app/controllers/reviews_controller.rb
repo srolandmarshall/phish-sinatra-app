@@ -1,7 +1,7 @@
 class ReviewController < ApplicationController
 
   get '/reviews' do
-    @reviews = Review.all
+    @reviews = Review.all.order(id: :desc)
     erb :'reviews/index'
   end
 
