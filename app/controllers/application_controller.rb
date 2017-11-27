@@ -29,6 +29,10 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  get '/agg' do
+    Scraper.add_year_to_shows
+  end
+
 
 
 end

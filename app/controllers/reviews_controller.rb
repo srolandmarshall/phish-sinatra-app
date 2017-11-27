@@ -19,7 +19,7 @@ class ReviewController < ApplicationController
   post '/add' do
     @years = Tour.unique_years
     @year = params[:year]
-    @shows = Show.where(year: params[:year]).order(:date_string)
+    @shows = Show.where(year: params[:year]).order(:date)
     @user = current_user
     erb :'reviews/add'
   end
